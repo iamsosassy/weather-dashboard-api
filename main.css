@@ -3,6 +3,10 @@ h1 {
     text-align: center;
 }
 
+.navbar {
+    display: block !important;
+}
+
 .searcharea {
     background-color: #e6f2ff;
     padding: 20px;

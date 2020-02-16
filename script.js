@@ -26,7 +26,7 @@ function initialize() {
 function success(position) {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&APPID=3aa0185a32fa2f1fff5f5a7f8653499a";
+    var queryURL = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&APPID=3aa0185a32fa2f1fff5f5a7f8653499a'
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -63,14 +63,15 @@ function showPrevious() {
 }
 
 function getCurrent(city) {
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=3aa0185a32fa2f1fff5f5a7f8653499a";
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=3aa0185a32fa2f1fff5f5a7f8653499a&units=imperial";
     $.ajax({
         url: queryURL,
         method: "GET",
-        error: function() {
+        error: function(err) {
+            console.log('r we hitting the error in first ajax call!!!', err);
             savedLocations.splice(savedLocations.indexOf(city), 1);
             localStorage.setItem("weathercities", JSON.stringify(savedLocations));
-            initialize();
+            //initialize();
         }
     }).then(function(response) {
         //create the card
@@ -106,7 +107,8 @@ function getCurrent(city) {
         cardBody.append($("<p>").attr("class", "card-text").text("Wind Speed: " + response.wind.speed + " MPH"));
 
         //get UV Index
-        var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=3aa0185a32fa2f1fff5f5a7f8653499a=" + response.coord.lat + "&lon=" + response.coord.lat;
+        console.log('About to do UV INdex')
+        var uvURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat + "&lon=" + response.coord.lat + "&APPID=3aa0185a32fa2f1fff5f5a7f8653499a&units=imperial";
         $.ajax({
             url: uvURL,
             method: "GET"
@@ -134,8 +136,9 @@ function getCurrent(city) {
 }
 
 function getForecast(city) {
-    //get 5 day forecast
-    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + city + "&APPID=3aa0185a32fa2f1fff5f5a7f8653499a=imperial";
+    console.log('we hit the 5 day forecast!!!')
+        //get 5 day forecast
+    var queryURL = "http://api.openweathermap.org/data/2.5/forecast?id=" + city + "&APPID=3aa0185a32fa2f1fff5f5a7f8653499a&units=imperial";
     $.ajax({
         url: queryURL,
         method: "GET"
